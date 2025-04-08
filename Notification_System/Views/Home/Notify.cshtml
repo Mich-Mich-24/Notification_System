@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Notify All Subscribers";
+}
+
+<h2>Notify Subscribers</h2>
+
+<form method="post">
+    <label>Message:</label>
+    <input type="text" name="message" placeholder="Enter your message" /><br />
+
+    <input type="submit" value="Send Notification" />
+</form>
+
+@if (ViewBag.Status != null)
+
+{
+    <p>@ViewBag.Status</p>
+}

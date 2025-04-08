@@ -1,0 +1,272 @@
+﻿@{
+    ViewData["Title"] = "Subscribe";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/subscribe.css" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        section.background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #001300;
+            display: flex;
+            flex-wrap: wrap;
+            z-index: -1;
+        }
+
+        section.background span {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            display: block;
+        }
+
+        section.background span::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #00ff0a;
+            transform: scale(0.1);
+            box-shadow: 0 0 10px #00ff0a,
+                        0 0 20px #00ff0a,
+                        0 0 40px #00ff0a,
+                        0 0 60px #00ff0a,
+                        0 0 80px #00ff0a,
+                        0 0 100px #00ff0a;
+            border-radius: 50%;
+            pointer-events: none;
+            transition: 2s;
+        }
+
+        section.background span:hover::before {
+            transform: scale(1);
+            transition: 0s;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px 50px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            z-index: 1;
+            position: relative;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #444;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, select:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .message-box {
+            background-color: #f1f8e9;
+            color: #4CAF50;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .message-box.show {
+            display: block;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Glowing Background -->
+    <section class="background">
+        @for (int i = 0; i < 1000; i++)
+        {
+            <span></span>
+        }
+    </section>
+
+    <!-- Subscribe Form -->
+    <div class="container fade-in">
+        <h2>Subscribe</h2>
+
+        <form method="post" onsubmit="return showSuccessMessage(event)">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label for="selectedType">Notification Type:</label>
+                <select id="selectedType" name="selectedType" required class="form-control" onchange="toggleInputFields()">
+                    <option value="Email">Email</option>
+                    <option value="SMS">SMS</option>
+                    <option value="Push">Push</option>
+                </select>
+            </div>
+
+            <div id="emailInput" class="form-group hidden">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" class="form-control" required />
+            </div>
+
+            <div id="smsInput" class="form-group hidden">
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" class="form-control" 
+                       pattern="^[+0-9]{1,}[0-9]{3,}$" required />
+                <small>Format: +1234567890</small>
+            </div>
+
+            <div id="pushInput" class="form-group hidden">
+                <label for="pushId">Push ID:</label>
+                <input type="text" id="pushId" name="pushId" placeholder="Enter your Push ID" class="form-control" required />
+            </div>
+
+            <input type="submit" value="Subscribe" class="btn btn-success w-100" />
+        </form>
+
+        <div id="messageBox" class="message-box">
+            <p>Your subscription has been successfully added!</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleInputFields() {
+            const selectedType = document.getElementById("selectedType").value;
+
+            document.getElementById("emailInput").classList.add("hidden");
+            document.getElementById("smsInput").classList.add("hidden");
+            document.getElementById("pushInput").classList.add("hidden");
+
+            if (selectedType === "Email") {
+                document.getElementById("emailInput").classList.remove("hidden");
+            } else if (selectedType === "SMS") {
+                document.getElementById("smsInput").classList.remove("hidden");
+            } else if (selectedType === "Push") {
+                document.getElementById("pushInput").classList.remove("hidden");
+            }
+        }
+
+        window.onload = function () {
+            toggleInputFields();
+        };
+
+        function showSuccessMessage(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const selectedType = document.getElementById("selectedType").value;
+            let isValid = true;
+
+            if (!name) {
+                isValid = false;
+                alert("Please enter your name.");
+            }
+
+            if (selectedType === "Email") {
+                const email = document.getElementById("email").value;
+                const emailPattern = /^[a-zA-Z0-9._%+-]+[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                if (!email || !emailPattern.test(email)) {
+                    isValid = false;
+                    alert("Please enter a valid email address.");
+                }
+            }
+
+            if (selectedType === "SMS") {
+                const phoneNumber = document.getElementById("phoneNumber").value;
+                const phonePattern = /^[+0-9]{1,}[0-9]{3,}$/;
+                if (!phoneNumber || !phonePattern.test(phoneNumber)) {
+                    isValid = false;
+                    alert("Please enter a valid phone number (e.g., +1234567890).");
+                }
+            }
+
+            if (isValid) {
+                const messageBox = document.getElementById("messageBox");
+                messageBox.classList.add("show");
+                setTimeout(() => messageBox.classList.remove("show"), 3000);
+            }
+
+            return isValid;
+        }
+    </script>
+</body>
+</html>
