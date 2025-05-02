@@ -1,0 +1,15 @@
+﻿@using NToastNotify
+
+@{
+    var toastNotifications = ViewData["ToastNotifications"] as List<ToastNotification>;
+}
+
+@if (toastNotifications != null)
+{
+    foreach (var toast in toastNotifications)
+    {
+        <div class="toast @toast.Type">
+            <span>@toast.Message</span>
+        </div>
+    }
+}
