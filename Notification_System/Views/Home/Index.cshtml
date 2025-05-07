@@ -1,21 +1,18 @@
 ﻿@{
-    ViewData["Title"] = "Subscribe";
+    Layout = "_Layout";
+}
+@{
+    ViewData["Title"] = "Notification Subscription";
 }
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/css/subscribe.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         section.background {
             position: fixed;
             top: 0;
@@ -26,136 +23,47 @@
             display: flex;
             flex-wrap: wrap;
             z-index: -1;
+            overflow: hidden;
         }
 
-        section.background span {
-            position: relative;
-            width: 40px;
-            height: 40px;
-            display: block;
-        }
+            section.background span {
+                position: relative;
+                width: 40px;
+                height: 40px;
+                display: block;
+            }
 
-        section.background span::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #00ff0a;
-            transform: scale(0.1);
-            box-shadow: 0 0 10px #00ff0a,
-                        0 0 20px #00ff0a,
-                        0 0 40px #00ff0a,
-                        0 0 60px #00ff0a,
-                        0 0 80px #00ff0a,
-                        0 0 100px #00ff0a;
-            border-radius: 50%;
-            pointer-events: none;
-            transition: 2s;
-        }
+                section.background span::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: #00ff0a;
+                    transform: scale(0.1);
+                    box-shadow: 0 0 10px #00ff0a, 0 0 20px #00ff0a, 0 0 40px #00ff0a, 0 0 60px #00ff0a;
+                    border-radius: 50%;
+                    pointer-events: none;
+                    transition: 2s;
+                }
 
-        section.background span:hover::before {
-            transform: scale(1);
-            transition: 0s;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: transparent;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: #333;
-        }
-
-        .container {
-            background-color: #fff;
-            padding: 30px 50px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px;
-            transition: transform 0.5s ease, opacity 0.5s ease;
-            z-index: 1;
-            position: relative;
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #444;
-            font-size: 24px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            font-size: 16px;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        input[type="text"], input[type="email"], input[type="tel"], select {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
-
-        input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, select:focus {
-            border-color: #4CAF50;
-            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
-        }
-
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            font-size: 18px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-
-        .message-box {
-            background-color: #f1f8e9;
-            color: #4CAF50;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 5px;
-            display: none;
-        }
-
-        .message-box.show {
-            display: block;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
+                section.background span:hover::before {
+                    transform: scale(1);
+                    transition: 0s;
+                }
     </style>
 </head>
+<body class="text-white min-h-screen flex flex-col items-center px-4 relative overflow-y-auto">
+    <!-- Navigation -->
+    <nav class="flex justify-between items-center w-full px-8 py-4">
+        <div class="flex space-x-4 text-sm font-medium">
+            <a asp-action="Index" asp-controller="Home" class="hover:underline">Home</a>
+            <a asp-action="ManageSubscribers" asp-controller="Home" class="hover:underline">Manage Subscribers</a>
+        </div>
+        <a asp-action="Notify" asp-controller="Home" class="bg-white text-black px-3 py-1 rounded-full text-xs font-semibold">Notify All</a>
+    </nav>
 
-<body>
     <!-- Glowing Background -->
     <section class="background">
         @for (int i = 0; i < 1000; i++)
@@ -164,109 +72,113 @@
         }
     </section>
 
-    <!-- Subscribe Form -->
-    <div class="container fade-in">
-        <h2>Subscribe</h2>
+    <!-- Header Text -->
+    <div class="text-center mt-20 relative z-10">
+        <h1 class="text-4xl font-bold mb-2">Smart Notification Plans<br>for Your Project</h1>
+        <p class="text-sm text-gray-300">Get timely updates through Email, SMS, or Push — choose what suits your workflow.</p>
 
-        <form method="post" onsubmit="return showSuccessMessage(event)">
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" placeholder="Enter your name" required class="form-control" />
+        @if (ViewBag.Message != null)
+        {
+            <div class="mt-4 p-3 bg-green-800 text-white rounded">
+                @ViewBag.Message
+            </div>
+        }
+    </div>
+
+    <!-- Plans -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-6xl w-full relative z-10">
+        <div class="bg-white text-black rounded-xl p-6 shadow-lg">
+            <h2 class="text-xl font-bold mb-2">Standard</h2>
+            <p class="text-sm text-gray-700 mb-4">Basic notification coverage for small projects.</p>
+            <ul class="text-sm text-gray-600 list-disc list-inside mb-4">
+                <li>Email Notifications</li>
+                <li>1 Admin User</li>
+                <li>Community Support</li>
+            </ul>
+            <button onclick="choosePlan('Email')" class="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800">Choose Standard</button>
+        </div>
+        <div class="bg-white text-black rounded-xl p-6 shadow-lg border-4 border-green-500">
+            <h2 class="text-xl font-bold mb-2">Pro</h2>
+            <p class="text-sm text-gray-700 mb-4">Advanced notifications & updates for growing needs.</p>
+            <ul class="text-sm text-gray-600 list-disc list-inside mb-4">
+                <li>Email & SMS Notifications</li>
+                <li>Multiple Users</li>
+                <li>Priority Support</li>
+            </ul>
+            <button onclick="choosePlan('SMS')" class="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800">Choose Pro</button>
+        </div>
+        <div class="bg-white text-black rounded-xl p-6 shadow-lg">
+            <h2 class="text-xl font-bold mb-2">Push Only</h2>
+            <p class="text-sm text-gray-700 mb-4">Focused alerts for modern web & mobile apps.</p>
+            <ul class="text-sm text-gray-600 list-disc list-inside mb-4">
+                <li>Push Notifications</li>
+                <li>Fast Delivery</li>
+                <li>Simple Integration</li>
+            </ul>
+            <button onclick="choosePlan('Push')" class="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800">Choose Push</button>
+        </div>
+    </div>
+
+    <!-- Subscribe Form -->
+    <div id="subscribeSection" class="max-w-lg mx-auto mt-20 bg-white text-black p-8 rounded-xl shadow-xl relative z-10 scroll-mt-20">
+        <h2 class="text-2xl font-bold mb-6 text-center">Subscribe to Notifications</h2>
+        <p class="text-center text-sm text-gray-600 mb-6">Stay informed with real-time alerts. Select your preferred notification method below.</p>
+
+        <form asp-action="Index" method="post">
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-semibold mb-1">Name *</label>
+                <input type="text" id="name" name="name" class="w-full border border-gray-300 rounded px-3 py-2" required />
             </div>
 
-            <div class="form-group">
-                <label for="selectedType">Notification Type:</label>
-                <select id="selectedType" name="selectedType" required class="form-control" onchange="toggleInputFields()">
+            <div class="mb-4">
+                <label for="selectedType" class="block text-sm font-semibold mb-1">Notification Type *</label>
+                <select id="selectedType" name="selectedType" class="w-full border border-gray-300 rounded px-3 py-2" required onchange="toggleFields()">
+                    <option value="">-- Select --</option>
                     <option value="Email">Email</option>
                     <option value="SMS">SMS</option>
                     <option value="Push">Push</option>
                 </select>
             </div>
 
-            <div id="emailInput" class="form-group hidden">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" class="form-control" required />
+            <div id="emailInput" class="mb-4 hidden">
+                <label for="email" class="block text-sm font-semibold mb-1">Email Address *</label>
+                <input type="email" id="email" name="email" class="w-full border border-gray-300 rounded px-3 py-2" />
             </div>
 
-            <div id="smsInput" class="form-group hidden">
-                <label for="phoneNumber">Phone Number:</label>
-                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" class="form-control" 
-                       pattern="^[+0-9]{1,}[0-9]{3,}$" required />
-                <small>Format: +1234567890</small>
+            <div id="smsInput" class="mb-4 hidden">
+                <label for="phoneNumber" class="block text-sm font-semibold mb-1">Phone Number *</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" class="w-full border border-gray-300 rounded px-3 py-2" pattern="^[+0-9]{1,}[0-9]{3,}$" />
+                <small class="text-gray-500">Format: +1234567890</small>
             </div>
 
-            <div id="pushInput" class="form-group hidden">
-                <label for="pushId">Push ID:</label>
-                <input type="text" id="pushId" name="pushId" placeholder="Enter your Push ID" class="form-control" required />
+            <div id="pushInput" class="mb-4 hidden">
+                <label for="pushId" class="block text-sm font-semibold mb-1">Push ID *</label>
+                <input type="text" id="pushId" name="pushId" class="w-full border border-gray-300 rounded px-3 py-2" />
             </div>
 
-            <input type="submit" value="Subscribe" class="btn btn-success w-100" />
+            <button type="submit" class="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800">Subscribe</button>
         </form>
-
-        <div id="messageBox" class="message-box">
-            <p>Your subscription has been successfully added!</p>
-        </div>
     </div>
 
     <script>
-        function toggleInputFields() {
-            const selectedType = document.getElementById("selectedType").value;
+        function toggleFields() {
+            const selected = document.getElementById('selectedType').value;
+            document.getElementById('emailInput').classList.add('hidden');
+            document.getElementById('smsInput').classList.add('hidden');
+            document.getElementById('pushInput').classList.add('hidden');
 
-            document.getElementById("emailInput").classList.add("hidden");
-            document.getElementById("smsInput").classList.add("hidden");
-            document.getElementById("pushInput").classList.add("hidden");
-
-            if (selectedType === "Email") {
-                document.getElementById("emailInput").classList.remove("hidden");
-            } else if (selectedType === "SMS") {
-                document.getElementById("smsInput").classList.remove("hidden");
-            } else if (selectedType === "Push") {
-                document.getElementById("pushInput").classList.remove("hidden");
-            }
+            if (selected === 'Email') document.getElementById('emailInput').classList.remove('hidden');
+            if (selected === 'SMS') document.getElementById('smsInput').classList.remove('hidden');
+            if (selected === 'Push') document.getElementById('pushInput').classList.remove('hidden');
         }
 
-        window.onload = function () {
-            toggleInputFields();
-        };
-
-        function showSuccessMessage(event) {
-            event.preventDefault();
-
-            const name = document.getElementById("name").value.trim();
-            const selectedType = document.getElementById("selectedType").value;
-            let isValid = true;
-
-            if (!name) {
-                isValid = false;
-                alert("Please enter your name.");
-            }
-
-            if (selectedType === "Email") {
-                const email = document.getElementById("email").value;
-                const emailPattern = /^[a-zA-Z0-9._%+-]+[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                if (!email || !emailPattern.test(email)) {
-                    isValid = false;
-                    alert("Please enter a valid email address.");
-                }
-            }
-
-            if (selectedType === "SMS") {
-                const phoneNumber = document.getElementById("phoneNumber").value;
-                const phonePattern = /^[+0-9]{1,}[0-9]{3,}$/;
-                if (!phoneNumber || !phonePattern.test(phoneNumber)) {
-                    isValid = false;
-                    alert("Please enter a valid phone number (e.g., +1234567890).");
-                }
-            }
-
-            if (isValid) {
-                const messageBox = document.getElementById("messageBox");
-                messageBox.classList.add("show");
-                setTimeout(() => messageBox.classList.remove("show"), 3000);
-            }
-
-            return isValid;
+        function choosePlan(type) {
+            document.getElementById('selectedType').value = type;
+            toggleFields();
+            document.getElementById('subscribeSection').scrollIntoView({ behavior: 'smooth' });
         }
+
+        window.addEventListener('DOMContentLoaded', toggleFields);
     </script>
 </body>
 </html>

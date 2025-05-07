@@ -1,18 +1,35 @@
-﻿@{
+﻿<!-- Views/Home/Notify.cshtml -->
+@{
+    Layout = "_Layout";
+}
+@{
     ViewData["Title"] = "Notify All Subscribers";
 }
 
-<h2>Notify Subscribers</h2>
+<div class="bg-white text-black rounded-xl p-6 shadow-lg max-w-md mx-auto">
+    <h2 class="text-2xl font-bold mb-6 text-center">@ViewData["Title"]</h2>
 
-<form method="post">
-    <label>Message:</label>
-    <input type="text" name="message" placeholder="Enter your message" /><br />
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <div class="mb-4">
+            <label for="message" class="block text-sm font-semibold mb-1 text-gray-700">Message:</label>
+            <input type="text" id="message" name="message" placeholder="Enter your message" required
+                   class="w-full border border-gray-300 rounded px-3 py-2 text-gray-800" />
+        </div>
 
-    <input type="submit" value="Send Notification" />
-</form>
+        <button type="submit" class="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800">
+            Send Notification
+        </button>
+    </form>
 
-@if (ViewBag.Status != null)
+    @if (ViewBag.Status != null)
+    {
+        <div class="mt-6 p-3 bg-green-800 text-white rounded text-center">
+            @ViewBag.Status
+        </div>
+    }
 
-{
-    <p>@ViewBag.Status</p>
-}
+    <div class="mt-8 text-center">
+        <a asp-action="Index" class="text-blue-400 hover:underline">Back to Home</a>
+    </div>
+</div>
