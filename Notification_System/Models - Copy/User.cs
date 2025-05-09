@@ -1,14 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 namespace Notification_System.Models
 {
     public class User : IObserver
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int UserId { get; set; }
-
+        [Key][DatabaseGenerated(DatabaseGeneratedOption.Identity)] public int UserId { get; set; }
         [Required]
         public string Name { get; set; } = string.Empty;
 
